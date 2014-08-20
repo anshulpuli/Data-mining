@@ -1,0 +1,58 @@
+# Loads a CSV files into a list of tuples.
+# Ignores the first row of the file (header).
+# Numeric attributes are converted to floats, nominal attributes
+# are represented with strings.
+# Parameters:
+#   fileName: name of the CSV file to be read
+# Returns: a list of tuples
+def loadCSV(fileName):
+    fileHandler = open(fileName, "rt")
+    lines = fileHandler.readlines()
+    fileHandler.close()
+    del lines[0] # remove the header
+    dataset = []
+    for line in lines:
+        instance = lineToTuple(line)
+        dataset.append(instance)
+    return dataset
+
+# Converts a comma separated string into a tuple
+# Parameters
+#   line: a string
+# Returns: a tuple
+def lineToTuple(line):
+    # remove leading/trailing witespace and newlines
+    cleanLine = line.strip()
+    # get rid of quotes
+    cleanLine = cleanLine.replace('"', '')
+    # separate the fields
+    lineList = cleanLine.split(",")
+    # convert strings into numbers
+    stringsToNumbers(lineList)
+    lineTuple = tuple(lineList)
+    return lineTuple
+
+# Destructively converts all the string elements representing numbers
+# to floating point numbers.
+# Parameters:
+#   myList: a list of strings
+# Returns None
+def stringsToNumbers(myList):
+    for i in range(len(myList)):
+        if (isValidNumberString(myList[i])):
+            myList[i] = float(myList[i])
+
+
+# Checks if a given string can be safely converted into a positive float.
+# Parameters:
+#   s: the string to be checked
+# Returns: True if the string represents a positive float, False otherwise
+def isValidNumberString(s):
+  if len(s) == 0:
+    return False
+  if  len(s) > 1 and s[0] == "-":
+      s = s[1:]
+  for c in s:
+    if c not in "0123456789.":
+      return False
+  return True
