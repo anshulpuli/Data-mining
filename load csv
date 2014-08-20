@@ -1,0 +1,12 @@
+import csv
+
+def read_lines():
+    with open('C:/Users/anshu_000/python/test.csv', 'rU') as data:
+        reader = csv.reader(data)
+        for row in reader:
+            yield [ float(ap) for ap in row ]
+
+for ap in read_lines():
+    print(ap)
+xy = list(read_lines())
+print xy
